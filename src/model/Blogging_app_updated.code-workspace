@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../Blogging_app_updated"
+		},
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "scisors"
+	}
+}
