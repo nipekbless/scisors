@@ -4,11 +4,13 @@ import shortUrl from "../model/url.model";
 export async function customShortUrl(req: Request, res: Response) {
   const targetUrl = req.params;
   const customUrl = req.body.customUrl;
+  const hostUrl = "http://localhost:2020";
+
   try {
     // search the database for target short URL data and replace with the custom url
     const updatedShortUrl = await shortUrl.findOneAndUpdate(
       targetUrl,
-      { shortUrl: customUrl },
+      { shortUrl: `${hostUrl}/${customUrl}` },
       { new: true }
     );
     if (!updatedShortUrl) {

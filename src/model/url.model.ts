@@ -1,35 +1,28 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { customAlphabet } from "nanoid";
+import { UserDocument } from "./user.model";
 
-//generate customeID
-const nanoid = customAlphabet(
-  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  3
-);
-
-interface ShortURL extends Document {
+export interface ShortURL extends Document {
   originalURL: string;
   shortUrl: string;
+  shortId: string;
   createdAt: Date;
-  clicks: Number;
+  clicks: number;
   lastClickedAt: Date | null;
   referringSources: string[];
+  user: Schema.Types.ObjectId | UserDocument;
 }
 
 const urlSchema = new Schema<ShortURL>({
   originalURL: { type: String, required: true },
-  shortUrl: {
-    type: String,
-    required: true,
-    unique: true,
-    default: () => nanoid(),
-  },
+  shortUrl: {type: String, required: true, unique: true},
+  shortId: { type: String, required: true, unique: true},
   createdAt: { type: Date, default: Date.now },
   clicks: { type: Number, required: true, default: 0 },
   lastClickedAt: { type: Date },
   referringSources: [String],
+  user: { type: Schema.Types.ObjectId, ref: "Users" },
 });
 
-const shortUrl = mongoose.model<ShortURL>("ShortURL", urlSchema);
+const ShortURLModel = mongoose.model<ShortURL>("ShortURL", urlSchema);
 
-export default shortUrl;
+export default ShortURLModel;

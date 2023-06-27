@@ -6,8 +6,8 @@ export async function redirectURL(req: Request, res: Response) {
     const { url } = req.params;
 
     //find corresponding original url from database
-
-    let shortenedUrl = await ShortURL.findOne({ shortUrl: url });
+    const hostUrl = "http://localhost:2020"
+    let shortenedUrl = await ShortURL.findOne({ shortUrl:`${hostUrl}/${url}` });
 
     if (!shortenedUrl) {
       return res.status(404).json({ error: "Short URL not found" });
@@ -22,7 +22,7 @@ export async function redirectURL(req: Request, res: Response) {
     shortenedUrl.clicks = Number(shortenedUrl.clicks) + 1;
     shortenedUrl.lastClickedAt = new Date();
     await shortenedUrl.save();
-    
+
     //perform the redirect
     res.redirect(shortenedUrl.originalURL);
   } catch (e) {
